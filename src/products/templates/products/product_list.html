@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Ecoton Cargo - Add Product{% endblock %}
+
+{% block css %}
+  {% static 'products/styles.css' %}
+{% endblock %}
+
+{% block body %}
+  <h1>Product Details</h1>
+
+  {% for product_id, features in prod_d.items %}
+    <h2>Product ID: {{ product_id }}</h2>
+    <ul>
+      {% for feature, value in features.items %}
+        <li>{{ feature }}: {{ value }}</li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+{% endblock %}

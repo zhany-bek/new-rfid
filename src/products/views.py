@@ -3,7 +3,6 @@ from decouple import config
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from .decorators import firebase_login_required
 import pyrebase
 
 # Create your views here.
@@ -33,25 +32,24 @@ def login(request):
 
         try:
             user = authe.sign_in_with_email_and_password(email, password)
-            # Store user information in session or handle as needed
             request.session['uid'] = user['localId']
 
             # Redirect to the dashboard or another page
             return render(request, 'products/dash.html')
 
-        except pyrebase.pyrebase.HTTPError as e:
-            error_message = e.args[1].get('error', {}).get('message', 'An error occurred.')
-            messages.error(request, error_message)
+        except:
+            error_message = "Incorrect credentials!"
+            return render(request, 'products/login.html', {
+                'error': error_message
+            })
 
     return render(request, 'products/login.html')
 
-@firebase_login_required
 def user_logout(request):
     logout(request)
     return redirect('home')
 
 # Dashboard
-@firebase_login_required
 def dash(request):
     return redirect('dashboard')
 
@@ -98,4 +96,12 @@ def reg_product(request):
 
 
 def product_list(request):
-    return render(request, 'products/product_list.html')
+    products_d = database.child('Products').get()
+    locations_d = database.child('Tags').get()
+    prod_d = {}
+    for prod in products_d.each():
+        prod_d[prod.key()] = prod.val()
+
+    context = {'prod_d': prod_d}
+
+    return render(request, 'products/product_list.html', context)
