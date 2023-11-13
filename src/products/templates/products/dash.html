@@ -1,0 +1,24 @@
+<!-- login.html -->
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Ecoton Cargo - Add Product{% endblock %}
+
+{% block css %}
+  {% static 'products/styles.css' %}
+{% endblock %}
+
+{% block body %}
+    <h2>Welcome to the Dashboard</h2>
+
+    <!-- Button to go to the "reg-product" page -->
+    <a href="{% url 'reg-product' %}">
+        <button>Register a New Product</button>
+    </a>
+
+    <!-- Button to go to the new URL for the product list -->
+    <a href="{% url 'product-list' %}">
+        <button>View Product List</button>
+    </a>
+{% endblock %}

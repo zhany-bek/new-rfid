@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#LOGIN_REDIRECT_URL = '/dash'
+#LOGIN_URL = '/login'
 
 # Application definition
 

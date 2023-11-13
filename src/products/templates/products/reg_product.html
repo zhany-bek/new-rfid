@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Ecoton Cargo - Add Product{% endblock %}
+
+{% block css %}
+  {% static 'products/styles.css' %}
+{% endblock %}
+
+{% block body %}
+    <h1>Welcome to Ecoton Cargo</h1>
+
+    <h2>Add a New Product</h2>
+    <p>{{tagss}}</p>
+
+    <form method="post" action="{% url 'reg-product' %}">
+    {% csrf_token %}
+
+    <label for="uid">UID:</label>
+    <select id="uid" name="uid" required>
+    {% for tag in tags %}
+        <option value="{{ tag }}">{{ tag }}</option>
+    {% endfor %}
+    </select>
+
+    <label for="block_type">Type of Block:</label>
+    <input type="text" id="block_type" name="block_type" required>
+
+    <label for="price_per_kg">Price per kg:</label>
+    <input type="text" id="price_per_kg" name="price_per_kg" required pattern="\d+(\.\d{2})?">
+
+    <button type="submit">Add Product</button>
+    {% if error %}
+        <p class="error" style="color: red; font-weight: bold;">{{ error }}</p>
+    {% endif %}
+
+    {% if success %}
+        <p class="success" style="color: green; font-weight: bold;">{{ success }}</p>
+    {% endif %}
+  </form>
+{% endblock %}
