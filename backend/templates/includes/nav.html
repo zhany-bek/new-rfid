@@ -1,0 +1,11 @@
+<header>
+    <nav class="main-nav">
+        <!---<a href={% url "home" %} id="selected">Home</a> -->
+        {% if request.session.uid %}
+            <a href="{% url 'logout' %}?next=/home">Logout</a>
+            <a href="profile.html">Profile</a>
+        {% else %}
+            <a href="{% url 'login' %}?next=/dashboard/">Login</a>
+        {% endif %}
+    </nav>
+</header>
