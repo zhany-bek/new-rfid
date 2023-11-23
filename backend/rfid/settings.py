@@ -77,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'rfid.wsgi.application'
+WSGI_APPLICATION = 'rfid.wsgi.app'
 
 
 # Database
