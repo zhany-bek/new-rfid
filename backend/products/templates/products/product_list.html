@@ -1,21 +1,51 @@
 {% extends "base.html" %}
-{% load static %}
+
 
 {% block title %}Ecoton Cargo - Add Product{% endblock %}
 
-{% block css %}
-  {% static 'products/styles.css' %}
-{% endblock %}
-
 {% block body %}
-  <h1>Product Details</h1>
 
-  {% for product_id, features in prod_d.items %}
-    <h2>Product ID: {{ product_id }}</h2>
-    <ul>
-      {% for feature, value in features.items %}
-        <li>{{ feature }}: {{ value }}</li>
+<div class="album py-5 bg-body-tertiary">
+  <div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      {% for key, value in prod_d.items %}
+      <div class="col">
+        <div class="card shadow-sm">
+      
+          <div class="card-body">
+            <h2 class="card-text">{{key}}</h2>
+            <ul class="list-unstyled mb-0">
+              {% for inner_key, inner_value in value.items%}
+              <li>
+                <span class="d-inline-block bg-success rounded-circle p-1"></span>
+                {{inner_key}}: {{inner_value}}
+              </li>
+              {% endfor %}
+            </ul>
+            <h5>Locations:</h5>
+
+            {% for loc_dict in locs_d.key %}
+                    {% for inner_lockey, inner_locvalue in loc_dict.items %}
+                        <li>
+                            <span class="d-inline-block bg-success rounded-circle p-1"></span>
+                            {{ inner_lockey }}: {{ inner_locvalue }}
+                        </li>
+                    {% endfor %}
+                {% endfor %}
+
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+              </div>
+              <small class="text-body-secondary">9 mins</small>
+            </div>
+          </div>
+        </div>
+      </div>
       {% endfor %}
-    </ul>
-  {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

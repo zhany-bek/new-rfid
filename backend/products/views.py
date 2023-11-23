@@ -75,12 +75,15 @@ def product_list(request):
     context = {'current_page': 'product-list'}
     products_d = database.child('Products').get()
     locations_d = database.child('Tags').get()
+    locs_d = {}
     prod_d = {}
     for prod in products_d.each():
         prod_d[prod.key()] = prod.val()
-
+    for locs in locations_d.each():
+        locs_d[locs.key()] = locs.val()
     context = {
         'prod_d': prod_d,
+        'locs_d': locs_d,
         'current_page': 'product-list'
     }
 
