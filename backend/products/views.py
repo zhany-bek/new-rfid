@@ -22,40 +22,12 @@ database = firebase.database()
 
 # Homepage
 def index(request):
-    return render(request, 'products/home.html')
-
-# Login
-def login(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-
-        try:
-            user = authe.sign_in_with_email_and_password(email, password)
-            request.session['uid'] = user['localId']
-
-            # Redirect to the dashboard or another page
-            return render(request, 'products/dash.html')
-
-        except:
-            error_message = "Incorrect credentials!"
-            return render(request, 'products/login.html', {
-                'error': error_message
-            })
-
-    return render(request, 'products/login.html')
-
-def user_logout(request):
-    logout(request)
-    return redirect('home')
-
-# Dashboard
-def dash(request):
-    return redirect('dashboard')
-
+    context = {'current_page': 'home'}
+    return render(request, 'products/home.html', context)
 
 # Adding new products with RFID tags
 def reg_product(request):
+    context = {'current_page': 'reg-product'}
     available_tags = []
     prod_uids = []
 
@@ -65,7 +37,9 @@ def reg_product(request):
             available_tags.append(tags.key())
     except:
         error_message = 'No tags available!'
-        return render(request, 'products/home.html', {'error': error_message, 'tags': available_tags})
+        context['error'] = 'No tags available!'
+        context['tags'] = available_tags
+        return render(request, 'products/home.html', context)
     try:
         products_d = database.child('Products').get()
         for products in products_d.each():
@@ -85,23 +59,29 @@ def reg_product(request):
             database.child('Products').update(data)
             available_tags.remove(uid)
             # If successful, redirect to a success page
-            return render(request, 'products/reg_product.html', {
-                'success': "Saved successfully!",
-                'tags': available_tags
-            })
+            context['success'] = 'Saved successfully!'
+            context['tags'] = available_tags
+            return render(request, 'products/reg_product.html', context)
         except:
+            context['error'] = 'Could not save :('
+            context['tags'] = available_tags
             error_message = 'Could not save :('
-            return render(request, 'products/reg_product.html', {'error': error_message, 'tags': available_tags})
-    return render(request, 'products/reg_product.html', {'tags': available_tags})
+            return render(request, 'products/reg_product.html', context)
+    context['tags'] = available_tags
+    return render(request, 'products/reg_product.html', context)
 
 
 def product_list(request):
+    context = {'current_page': 'product-list'}
     products_d = database.child('Products').get()
     locations_d = database.child('Tags').get()
     prod_d = {}
     for prod in products_d.each():
         prod_d[prod.key()] = prod.val()
 
-    context = {'prod_d': prod_d}
+    context = {
+        'prod_d': prod_d,
+        'current_page': 'product-list'
+    }
 
     return render(request, 'products/product_list.html', context)

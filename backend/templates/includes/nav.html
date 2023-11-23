@@ -1,11 +1,15 @@
-<header>
-    <nav class="main-nav">
-        <!---<a href={% url "home" %} id="selected">Home</a> -->
-        {% if request.session.uid %}
-            <a href="{% url 'logout' %}?next=/home">Logout</a>
-            <a href="profile.html">Profile</a>
-        {% else %}
-            <a href="{% url 'login' %}?next=/dashboard/">Login</a>
-        {% endif %}
-    </nav>
-</header>
+<div class="container">
+    <header class="d-flex justify-content-center py-3">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a href={% url 'home' %} class="nav-link {% if current_page == 'home' %}active{% endif %}" aria-current="page">Home</a>
+        </li>
+        <li class="nav-item">
+            <a href={% url 'reg-product' %} class="nav-link {% if current_page == 'reg-product' %}active{% endif %}">Add Product</a>
+        </li>
+        <li class="nav-item">
+            <a href={% url 'product-list' %} class="nav-link {% if current_page == 'product-list' %}active{% endif %}">View Products</a>
+        </li>
+      </ul>
+    </header>
+</div>
