@@ -81,9 +81,13 @@ def product_list(request):
         prod_d[prod.key()] = prod.val()
     for locs in locations_d.each():
         locs_d[locs.key()] = locs.val()
+
+    combined_dict = {}
+    for key, value in prod_d.items():
+        combined_dict[key] = (value, locs_d[key])
+
     context = {
-        'prod_d': prod_d,
-        'locs_d': locs_d,
+        'combined_d': combined_dict,
         'current_page': 'product-list'
     }
 
