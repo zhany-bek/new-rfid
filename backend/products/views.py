@@ -92,3 +92,48 @@ def product_list(request):
     }
 
     return render(request, 'products/product_list.html', context)
+
+def product_cat(request, product):
+
+    if request.method == 'POST':
+        key = request.POST.get('key')
+        key_product = database.child('Products').child(key).get()
+        key_tag = database.child('Tags').child(key).get()
+        database.child('Archive').child('Products').update({key_product.key(): key_product.val()})
+        database.child('Archive').child('Tags').update({key_tag.key(): key_tag.val()})
+        database.child('Products').child(key).remove()
+        database.child('Tags').child(key).remove()
+        return redirect('product-list')
+
+    product_frame = database.child('Products').child(product).get()
+    tag_frame = database.child('Tags').child(product).get()
+    prod_d = {product_frame.key(): product_frame.val()}
+    locs_d = {tag_frame.key(): tag_frame.val()}
+    
+    return render(request, 'products/product-cat.html', {
+        'prod_d': prod_d,
+        'locs_d': locs_d
+    })
+    
+
+def archive(request):
+    context = {'current_page': 'archive'}
+    products_d = database.child('Archive').child('Products').get()
+    locations_d = database.child('Archive').child('Tags').get()
+    locs_d = {}
+    prod_d = {}
+    for prod in products_d.each():
+        prod_d[prod.key()] = prod.val()
+    for locs in locations_d.each():
+        locs_d[locs.key()] = locs.val()
+
+    combined_dict = {}
+    for key, value in prod_d.items():
+        combined_dict[key] = (value, locs_d[key])
+
+    context = {
+        'combined_d': combined_dict,
+        'current_page': 'archive'
+    }
+
+    return render(request, 'products/archive.html', context)

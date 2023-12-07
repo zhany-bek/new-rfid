@@ -10,6 +10,9 @@
         <li class="nav-item">
             <a href={% url 'product-list' %} class="nav-link {% if current_page == 'product-list' %}active{% endif %}">View Products</a>
         </li>
+        <li class="nav-item">
+            <a href={% url 'archive' %} class="nav-link {% if current_page == 'archive' %}active{% endif %}">Archive</a>
+        </li>
       </ul>
     </header>
 </div>

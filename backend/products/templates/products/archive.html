@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 
-{% block title %}Ecoton Cargo - Product List{% endblock %}
+{% block title %}Ecoton Cargo - Add Product{% endblock %}
 
 {% block body %}
 
 <div class="album py-5 bg-body-tertiary">
-  <h1 class="text-center">Available Products</h1>
+  <h1 class="text-center">Archived Products</h1>
   <br>
   <div class="container">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -15,7 +15,7 @@
         <div class="card shadow-sm">
       
           <div class="card-body">
-            <h2 class="card-text">{{key}}</h2>
+            <h2 class="card-text" style="color: #DC143C"><em>*Archived*</em><br> {{key}}</h2>
             <ul class="list-unstyled mb-0">
 
                 {% for prod_key, prod_value in value.0.items%}
@@ -41,7 +41,7 @@
             <br>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
-                <a class="btn btn-sm btn-outline-secondary" href={% url "productcat" key %}>Edit</a>
+                <button type="button" class="btn btn-sm btn-outline-secondary">Archive</button>
               </div>
             </div>
           </div>
